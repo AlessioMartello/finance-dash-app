@@ -2,7 +2,7 @@
 
 This is a Python-built financial planner for importing, analysing and reporting on my finances.
 
-###How it works
+### How it works
 
 Bank Transactions and balances are extracted via the [Plaid](https://plaid.com/en-gb/) open banking API.
 Data is transformed and manipulated using Pandas. KPIS are calculated and reported on using [Dash](https://plotly.com/dash/). The report is currently hosted locally.
@@ -23,8 +23,8 @@ Create a .env file to store the following variables:
 In order to obtain the DEV_ACCESS_TOKEN, create a plaid account and then follow the procedure outlined here in the [Plaid Quickstart Guide](https://github.com/plaid/quickstart).
 
 Following this update your environment variables and execute dashboard.py
-##Usage
-#####Key KPIS that are returned include:
+## Usage
+##### Key KPIS that are returned include:
 * Average spend
 * Monthly expenditure
 * Transactions history with filtering capabilities
