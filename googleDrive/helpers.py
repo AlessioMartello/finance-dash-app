@@ -15,7 +15,10 @@ SCOPES = ['https://www.googleapis.com/auth/drive']
 serviceCredentialDict, keys = {}, ["type", "project_id", "private_key_id","private_key", "client_email", "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url"]
 
 for i in keys:
-    serviceCredentialDict[i] = os.environ.get(i)
+    if i == "private_key":
+        serviceCredentialDict[i] = os.environ.get(i).replace('\\n', '\n')
+    else:
+        serviceCredentialDict[i] = os.environ.get(i)
 
 # Authenticate to Google Drive API
 creds= ServiceAccountCredentials.from_json_keyfile_dict(serviceCredentialDict, scopes=SCOPES)
