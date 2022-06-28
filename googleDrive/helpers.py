@@ -59,7 +59,7 @@ def uploadFile(name, content):
                                         fields='id').execute()
 
 def deleteFile(fileDelete):
-    file = service.files().delete(fileId=fileDelete).execute()
+    file = service.files().delete(fileId=fileDelete, supportsAllDrives=True).execute()
 
 # todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
