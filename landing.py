@@ -12,16 +12,21 @@ from index import getDisplayData, getTransDf, todayDate, getTransThisMonth, getT
 from flask import request
 from dash import html, Input, Output
 
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'test': 'world'
+}
+
 load_dotenv()
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                 )
 app.config.suppress_callback_exceptions = True
 
-# auth = dash_auth.BasicAuth(
-#     app,
-#     {os.environ.get("valid_username"): os.environ.get("valid_password"),
-#      os.environ.get("valid_username2"): os.environ.get("valid_password2")}
-# )
+auth = dash_auth.BasicAuth(
+    app,
+    VALID_USERNAME_PASSWORD_PAIRS
+    # {os.environ.get("valid_username"): os.environ.get("valid_password"),
+    #  os.environ.get("valid_username2"): os.environ.get("valid_password2")}
+)
 server=app.server
 
 def returnLandingPage():
@@ -197,12 +202,12 @@ def transactionDataFilter(start_date, end_date, kw, value, url):
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
     username = request.authorization['username']
-    if pathname == '/live' and username == os.environ.get("valid_username"):
-        return returnPage(live=True)
-    elif pathname == '/sample' and (username == "test" or username == os.environ.get("valid_username")):
+    # if pathname == '/live' and username == "test":
+    #     return returnPage(live=True)
+    if pathname == '/sample' and (username == "test" or username == os.environ.get("valid_username")):
         return returnPage(live=False)
-    elif pathname == "/live" and username != os.environ.get("valid_username"):
-        return returnLandingPage()
+    # elif pathname == "/live" and username != os.environ.get("valid_username"):
+    #     return returnLandingPage()
     else:
         return returnLandingPage()
 
