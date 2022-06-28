@@ -13,9 +13,11 @@ from flask import request
 from dash import html, Input, Output
 
 VALID_USERNAME_PASSWORD_PAIRS = {
-    'test': 'world'
-}
+    str(os.environ["VALID_USERNAME"]): str(os.environ["VALID_PASSWORD"]),
+   str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]),
+    }
 
+print(VALID_USERNAME_PASSWORD_PAIRS)
 load_dotenv()
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                 )
@@ -202,12 +204,12 @@ def transactionDataFilter(start_date, end_date, kw, value, url):
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
     username = request.authorization['username']
-    # if pathname == '/live' and username == "test":
-    #     return returnPage(live=True)
-    if pathname == '/sample' and (username == "test" or username == os.environ.get("valid_username")):
+    if pathname == '/live' and username == os.environ["VALID_USERNAME1"]:
+        return returnPage(live=True)
+    elif pathname == '/sample' and (username == "test" or username == os.environ["VALID_USERNAME"]):
         return returnPage(live=False)
-    # elif pathname == "/live" and username != os.environ.get("valid_username"):
-    #     return returnLandingPage()
+    elif pathname == "/live" and username != os.environ["VALID_USERNAME"]:
+        return returnLandingPage()
     else:
         return returnLandingPage()
 
