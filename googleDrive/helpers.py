@@ -61,6 +61,23 @@ def uploadFile(name, content):
 def deleteFile(fileDelete):
     file = service.files().delete(fileId=fileDelete).execute()
 
+# todo this transactions not working in heroku but it is in helpers.py
+def appendTransactions(newData: list):
+    """Update the transaction file in google Drive"""
+    # file_id= chooseFileId("transactions.json")
+
+    # listExistingData=json.load(getFile(file_id))
+    existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
+
+    for transaction in reversed(newData):
+        if transaction["name"] == "REGULAR TRANSFER FROM MR ALESSIO RICARDO MARTELLO REFERENCE - RENT":
+            continue
+        elif transaction["transaction_id"] not in existingTransactionIds:
+            transaction["amount"] = -transaction["amount"]
+            listExistingData.insert(0, transaction)
+    deleteFile(transactions_file_id)  # todo change to update
+    uploadFile("transactions.json", listExistingData)
+
 service = createConnection()
 file_objs = getFileNames(service)
 transactions_file_id = chooseFileId("transactions.json")
