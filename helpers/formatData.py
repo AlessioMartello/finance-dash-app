@@ -17,9 +17,9 @@ balances = getBalances(accessToken)
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
     file_id= chooseFileId("transactions.json")
-    print(pd.read_json(getFile(file_id)))
+    print("---------- In helpers.py:")
+    print(file_id)
     listExistingData=json.load(getFile(file_id))
-    print(listExistingData)
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
