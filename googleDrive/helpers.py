@@ -56,13 +56,15 @@ def chooseFileId(name):
 def uploadFile(name, content):
     media = http.MediaIoBaseUpload(io.StringIO(json.dumps(content, default=str)), mimetype='plain/text')
     file_metadata = {'name': name}
-    file = service.files().create(body=file_metadata,
+    service.files().create(body=file_metadata,
                                         media_body=media,
                                         fields='id').execute()
 
 def deleteFile(fileDelete):
     print("in the delete function" +fileDelete)
-    file = service.files().delete(fileId=fileDelete.replace(".", ""), supportsAllDrives=True).execute()
+
+    service.files().delete(fileId=fileDelete).execute()
+    service.files().emptyTrash().execute()
 
 # todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
@@ -93,4 +95,4 @@ balances_sample = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
 
 
 if __name__ == "__main__":
-    pass
+    print(service.files().get(fileId=chooseFileId("transactions.json"), fields='*').execute())
