@@ -13,11 +13,13 @@ accessToken = os.getenv("DEV_ACCESS_TOKEN")
 currentAccountName = os.getenv("CURRENTACCOUNT")
 balances = getBalances(accessToken)
 
-
+# todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
     file_id= chooseFileId("transactions.json")
+    print(pd.read_json(getFile(file_id)))
     listExistingData=json.load(getFile(file_id))
+    print(listExistingData)
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
@@ -80,4 +82,4 @@ def makeSampleData(source_id, destination_id):
     uploadFile("transactions - Copy.json", source_json)
 
 if __name__ == '__main__':
-    print(chooseFileId("transactions.json"))
+    file_id = chooseFileId("transactions.json")
