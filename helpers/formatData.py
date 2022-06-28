@@ -17,6 +17,7 @@ balances = getBalances(accessToken)
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
     file_id= chooseFileId("transactions.json")
+    print(file_id)
     listExistingData=json.load(getFile(file_id))
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 

@@ -17,7 +17,6 @@ serviceCredentialDict, keys = {}, ["type", "project_id", "private_key_id","priva
 for i in keys:
     serviceCredentialDict[i] = os.environ.get(i).replace("\\n", "\n")
 
-print(serviceCredentialDict)
 sys.stdout.flush()
 # Authenticate to Google Drive API
 creds= ServiceAccountCredentials.from_json_keyfile_dict(serviceCredentialDict, scopes=SCOPES)
@@ -64,7 +63,7 @@ def deleteFile(fileDelete):
 
 service = createConnection()
 file_objs = getFileNames(service)
-
+print(file_objs)
 
 transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
 transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
