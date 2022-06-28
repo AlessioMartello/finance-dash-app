@@ -7,7 +7,9 @@ from dotenv import load_dotenv
 from googleapiclient.http import MediaIoBaseDownload
 import pandas as pd
 import os
-from oauth2client.service_account import ServiceAccountCredentials
+#from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
+
 import sys
 load_dotenv()
 
@@ -19,7 +21,7 @@ for i in keys:
 
 sys.stdout.flush()
 # Authenticate to Google Drive API
-creds= ServiceAccountCredentials.from_json_keyfile_dict(serviceCredentialDict, scopes=SCOPES)
+creds= service_account.Credentials.from_service_account_info(serviceCredentialDict)
 service = build('drive', 'v3', credentials=creds)
 results = service.files().list(pageSize=10, fields="nextPageToken, files(id, name)").execute()
 
