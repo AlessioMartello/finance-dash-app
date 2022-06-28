@@ -14,10 +14,9 @@ from dash import html, Input, Output
 
 VALID_USERNAME_PASSWORD_PAIRS = {
     str(os.environ["VALID_USERNAME"]): str(os.environ["VALID_PASSWORD"]),
-   str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]),
+   str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]), #todo maybe remove the string method
     }
 
-print(VALID_USERNAME_PASSWORD_PAIRS)
 load_dotenv()
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                 )
@@ -26,8 +25,6 @@ app.config.suppress_callback_exceptions = True
 auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
-    # {os.environ.get("valid_username"): os.environ.get("valid_password"),
-    #  os.environ.get("valid_username2"): os.environ.get("valid_password2")}
 )
 server=app.server
 
@@ -204,7 +201,7 @@ def transactionDataFilter(start_date, end_date, kw, value, url):
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
     username = request.authorization['username']
-    if pathname == '/live' and username == os.environ["VALID_USERNAME1"]:
+    if pathname == '/live' and username == os.environ["VALID_USERNAME"]:
         return returnPage(live=True)
     elif pathname == '/sample' and (username == "test" or username == os.environ["VALID_USERNAME"]):
         return returnPage(live=False)
