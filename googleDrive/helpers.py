@@ -63,9 +63,9 @@ def deleteFile(fileDelete):
 
 service = createConnection()
 file_objs = getFileNames(service)
-print("---------- In helpers.py:")
-print(file_objs)
-print(chooseFileId("transactions.json"))
+transactions_file_id = chooseFileId("transactions.json")
+listExistingData=json.load(getFile(transactions_file_id))
+
 transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
 transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
 creditScoreJsonStr = pd.read_json(getFile(chooseFileId("creditScore.json")))

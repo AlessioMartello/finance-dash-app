@@ -1,11 +1,11 @@
-from googleDrive.helpers import getFile, chooseFileId, deleteFile, uploadFile
+from googleDrive.helpers import getFile,  deleteFile, uploadFile, listExistingData, transactions_file_id#,chooseFileId,
 from helpers.getfinancialData import getBalances
 from dotenv import load_dotenv
 import pandas as pd
 import os
 import string
 import random
-import json
+#import json
 
 load_dotenv()
 
@@ -16,10 +16,9 @@ balances = getBalances(accessToken)
 # todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
-    file_id= chooseFileId("transactions.json")
-    print("---------- In helpers.py:")
-    print(file_id)
-    listExistingData=json.load(getFile(file_id))
+    #file_id= chooseFileId("transactions.json")
+
+    #listExistingData=json.load(getFile(file_id))
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
@@ -28,7 +27,7 @@ def appendTransactions(newData: list):
         elif transaction["transaction_id"] not in existingTransactionIds:
             transaction["amount"] = -transaction["amount"]
             listExistingData.insert(0, transaction)
-    deleteFile(file_id) # todo change to update
+    deleteFile(transactions_file_id) # todo change to update
     uploadFile("transactions.json", listExistingData)
 
 
@@ -82,4 +81,4 @@ def makeSampleData(source_id, destination_id):
     uploadFile("transactions - Copy.json", source_json)
 
 if __name__ == '__main__':
-    file_id = chooseFileId("transactions.json")
+    pass
