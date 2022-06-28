@@ -80,6 +80,8 @@ def appendTransactions(newData: list):
         elif transaction["transaction_id"] not in existingTransactionIds:
             transaction["amount"] = -transaction["amount"]
             listExistingData.insert(0, transaction)
+    # deleteFile(transactions_file_id)  # todo this may change every time you call it?? in heroku
+    # uploadFile("transactions.json", listExistingData)
 
 
 service = createConnection()

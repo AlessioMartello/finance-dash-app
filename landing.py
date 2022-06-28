@@ -15,13 +15,14 @@ from dash import html, Input, Output
 load_dotenv()
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
                 )
-server=app.server
 app.config.suppress_callback_exceptions = True
 
-auth = dash_auth.BasicAuth(
-    app,
-    {os.environ.get("valid_username"): os.environ.get("valid_password"),
-     os.environ.get("valid_username2"): os.environ.get("valid_password2")}, )
+# auth = dash_auth.BasicAuth(
+#     app,
+#     {os.environ.get("valid_username"): os.environ.get("valid_password"),
+#      os.environ.get("valid_username2"): os.environ.get("valid_password2")}
+# )
+server=app.server
 
 def returnLandingPage():
     return html.Div([

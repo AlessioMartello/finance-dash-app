@@ -16,8 +16,7 @@ todayDate = date.today() + timedelta(days=1)
 transRaw = getTransactions(todayDate)
 listProcessedTransaction = processTransactions(transRaw)
 appendTransactions(listProcessedTransaction)
-#deleteFile(transactions_file_id)  # todo change to update
-#uploadFile("transactions.json", listExistingData)
+
 
 def getDisplayData(live=False):
     if live:
