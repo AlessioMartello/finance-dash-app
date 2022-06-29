@@ -1,6 +1,6 @@
 from googleDrive.helpers import transactions, transactions_sample, balances_sample, \
-    appendTransactions # uploadFile, transactions_file_id, listExistingData,deleteFile
-from helpers.formatData import getHistoricBalances, removeErrorTransaction, processTransactions, processBalances#, appendTransactions
+    appendTransactions, makeSampleData
+from helpers.formatData import getHistoricBalances, removeErrorTransaction, processTransactions, processBalances
 from helpers.KPIs import averageSpend, getCategoryCounts, monthlyExpenditure, currentMonthTransactions, thisMonthSpend
 from helpers.getfinancialData import getTransactions
 import pandas as pd
@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load in data
+makeSampleData()
 todayDate = date.today() + timedelta(days=1)
 transRaw = getTransactions(todayDate)
 listProcessedTransaction = processTransactions(transRaw)

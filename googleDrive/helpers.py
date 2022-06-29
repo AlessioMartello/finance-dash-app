@@ -1,15 +1,15 @@
 from __future__ import print_function
 import io
-import json
 from googleapiclient import http
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
 from googleapiclient.http import MediaIoBaseDownload
 import pandas as pd
 import os
-#from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2 import service_account
-
+import string
+import random
+import json
 import sys
 load_dotenv()
 
@@ -48,7 +48,7 @@ def getFile(file_id):
 
 
 def chooseFileId(name):
-    for i in file_objs:
+    for i in getFileNames(service):
         if i["name"] == name:
             return i["id"]
 
@@ -61,15 +61,14 @@ def uploadFile(name, content):
                                         fields='id').execute()
 
 def deleteFile(fileDelete):
-    print("in the delete function: " +fileDelete)
-    print("in the delete function: " +str(file_objs))
-
     service.files().delete(fileId=fileDelete).execute()
     service.files().emptyTrash().execute()
 
 # todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
+    transactions_file_id = chooseFileId("transactions.json")
+    listExistingData = json.load(getFile(transactions_file_id))
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
@@ -83,20 +82,37 @@ def appendTransactions(newData: list):
         print("successfully deleted transactions")
         uploadFile("transactions.json", listExistingData)
         print("successfully uploaded new transactions")
-    except:
+    except Exception as e:
+        print(e)
         print("error deleting and uploading transactions")
 
+def makeSampleData():
+    letters = string.ascii_uppercase
+    sourceDataId = chooseFileId("transactions.json")
+    sinkDataId = chooseFileId("transactions - Copy.json")
+    source_json = json.load(getFile(sourceDataId))
+
+    for i in source_json:
+        i["name"] = "Payment " + random.choice(letters)
+        i["account_id"] = "Account id " + random.choice(letters)
+        i["transaction_id"] = "Transaction id " + random.choice(letters)
+        i["amount"] = random.randint(-1000, 1000)
+    try:
+        deleteFile(sinkDataId)
+        print("Successfully deleted sample data")
+        uploadFile("transactions - Copy.json", source_json)
+        print("successfully uploaded sample data")
+    except Exception as e:
+        print(e)
+        print("error deleting and uploading sample data")
+
+
 service = createConnection()
-file_objs = getFileNames(service)
-transactions_file_id = chooseFileId("transactions.json")
-listExistingData=json.load(getFile(transactions_file_id))
-print("outside of the append function: "+str(file_objs))
-print("outside of the append function: "+chooseFileId("transactions.json"))
 transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
 transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
-creditScoreJsonStr = pd.read_json(getFile(chooseFileId("creditScore.json")))
 balances_sample = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
 
 
 if __name__ == "__main__":
     pass
+
