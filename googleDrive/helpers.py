@@ -61,7 +61,8 @@ def uploadFile(name, content):
                                         fields='id').execute()
 
 def deleteFile(fileDelete):
-    print("in the delete function" +fileDelete)
+    print("in the delete function: " +fileDelete)
+    print("in the delete function: " +str(file_objs))
 
     service.files().delete(fileId=fileDelete).execute()
     service.files().emptyTrash().execute()
@@ -80,16 +81,23 @@ def appendTransactions(newData: list):
         elif transaction["transaction_id"] not in existingTransactionIds:
             transaction["amount"] = -transaction["amount"]
             listExistingData.insert(0, transaction)
-    # deleteFile(transactions_file_id)  # todo this may change every time you call it?? in heroku
-    # uploadFile("transactions.json", listExistingData)
-
+    try:
+        deleteFile(transactions_file_id)  # todo this may change every time you call it?? in heroku
+        print("successfully deleted transactions")
+    except:
+        print("error deleting transactions")
+    try:
+        uploadFile("transactions.json", listExistingData)
+        print("successfully uploaded new transactions")
+    except:
+        print("error uploading transactions")
 
 service = createConnection()
 file_objs = getFileNames(service)
 transactions_file_id = chooseFileId("transactions.json")
 listExistingData=json.load(getFile(transactions_file_id))
-print(file_objs)
-print(chooseFileId("transactions.json"))
+print("outside of the append function: "+str(file_objs))
+print("outside of the append function: "+chooseFileId("transactions.json"))
 transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
 transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
 creditScoreJsonStr = pd.read_json(getFile(chooseFileId("creditScore.json")))

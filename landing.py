@@ -215,7 +215,7 @@ def display_page(pathname):
               [dash.dependencies.Input('url', 'pathname')])
 def hide(pathname):
     username = request.authorization['username']
-    if pathname == "/live" and username != os.environ.get("valid_username"):
+    if pathname == "/live" and username != os.environ["VALID_USERNAME"]:
         return {'display': 'block', "font-size": "xx-large"}
     else:
         return {'display': 'none', "font-size": "xx-large"}

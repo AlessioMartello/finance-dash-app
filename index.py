@@ -1,5 +1,5 @@
 from googleDrive.helpers import transactions, transactions_sample, balances_sample, \
-    appendTransactions,  uploadFile, transactions_file_id, listExistingData,deleteFile  # ,creditScoreJsonStr
+    appendTransactions # uploadFile, transactions_file_id, listExistingData,deleteFile  # ,creditScoreJsonStr
 from helpers.formatData import getHistoricBalances, removeErrorTransaction, processTransactions, processBalances#, appendTransactions
 from helpers.KPIs import averageSpend, getCategoryCounts, monthlyExpenditure, currentMonthTransactions, thisMonthSpend
 from helpers.getfinancialData import getTransactions
@@ -22,7 +22,6 @@ def getDisplayData(live=False):
     if live:
         transactionsFile = transactions
         balancesDf = processBalances()
-
     else:
         transactionsFile = transactions_sample
         balancesDf = balances_sample
