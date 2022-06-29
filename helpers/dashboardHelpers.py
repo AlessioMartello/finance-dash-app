@@ -126,25 +126,6 @@ def createPieChart(catgoryCounts):
     return PieChartfig
 
 
-# def creditScoreLineChart(file):
-#     """ Makes the Experian credit score line chart vs time"""
-#     df = file
-#     creditScoreChart = px.line(df, x="date", y="score")
-#     creditScoreChart.update_layout(
-#         paper_bgcolor="rgba(0,0,0,0)",
-#         autosize=True,
-#         height=800,
-#         title_font_color="white",
-#         title_font_size=20,
-#         legend_font_color="grey",
-#         legend_font_size=20,
-#         plot_bgcolor='rgb(34,34,34)',
-#     )
-#
-#     creditScoreChart.update_xaxes(title_text="Date", color="white", showgrid=False)
-#     creditScoreChart.update_yaxes(title_text="Credit Score", color="white", showgrid=False)
-#     return creditScoreChart
-
 def addTitle(text):
     """ Formats the text to use as a figure title"""
     mkdw = f"""{text}"""
@@ -218,10 +199,10 @@ def makeHeader(text):
         )
             ),
         dbc.Col(
-            html.H1('Alessio\'s personal finance app'),style={"color":"rgb(112,38,185)"}),
+            html.H1('Alessio\'s personal finance app', className="text-center"),style={"color":"rgb(112,38,185)"}),
         dbc.Col(dcc.Markdown(children=text))
     ], justify="center", align="center", )
 
 
 if __name__ == '__main__':
-    makeHeader("hi")
+    pass

@@ -19,6 +19,7 @@ appendTransactions(listProcessedTransaction)
 
 
 def getDisplayData(live=False):
+    """Function returns the relevant data for balance and transactions."""
     if live:
         transactionsFile = transactions
         balancesDf = processBalances()
@@ -29,6 +30,7 @@ def getDisplayData(live=False):
 
 
 def getTransDf(transactionsFile, balancesDf):
+    """Function cleans the erroneous raw transactions file."""
     transDfUnclean = getHistoricBalances(removeErrorTransaction(transactionsFile), balancesDf)
     transDf = cleanCategories(transDfUnclean)
     return transDf
@@ -42,6 +44,9 @@ def getTransThisMonth(transDf):
     return transThisMonth
 
 def getText(transDf, transThisMonth):
+    """
+    Returns markdown text using calculated KPIs to be displayed on dashboard
+    """
     # Get KPIs
     kpiDict={}
     meanSpend, medianSpend, modeSpend = averageSpend(transDf)

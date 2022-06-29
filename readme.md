@@ -3,7 +3,7 @@
 This is a Python-built financial planner for importing, analysing and reporting on my finances.
 
 ### See it in action!
-See the working web application [here!](https://alessio-finance-dash-app.herokuapp.com/live)
+See the working web application [here!](https://alessio-finance-dash-app.herokuapp.com/)
 
 When prompted enter the "test" for both security parameters to see sample data.
 ### How it works
@@ -29,9 +29,6 @@ This is a bespoke tool. Modifications will be needed to configure this to work w
 
 ## Planned development
 The intention is to create an Android App will be used as the UI.
-
-## Contributing
-Pull requests are welcome.
 
 ## Contact
 [LinkedIn](https://www.linkedin.com/in/alessiomartello/)

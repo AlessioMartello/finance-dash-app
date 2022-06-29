@@ -12,6 +12,7 @@ from index import getDisplayData, getTransDf, todayDate, getTransThisMonth, getT
 from flask import request
 from dash import html, Input, Output
 
+# Load in env variables for Dash Basic Auth
 VALID_USERNAME_PASSWORD_PAIRS = {
     str(os.environ["VALID_USERNAME"]): str(os.environ["VALID_PASSWORD"]),
    str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]), #todo maybe remove the string method
@@ -26,9 +27,12 @@ auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
 )
-server=app.server
+server=app.server # For use in Heroku Procfile
 
 def returnLandingPage():
+    """
+    Returns initial landing page. Dash basic auth displays initally then user can choose dataset.
+    """
     return html.Div([
         dbc.Row([
             dbc.Col(
@@ -48,6 +52,10 @@ app.layout = html.Div([
 
 
 def returnPage(live=False):
+    """
+    Displays the html formatted page made using Dash. Data returned is live or sample depending on authentication and
+    selection.
+    """
     if live:
         transactionsFile, balancesDf = getDisplayData(live=True)
     else:
@@ -197,6 +205,7 @@ def transactionDataFilter(start_date, end_date, kw, value, url):
 @app.callback(dash.dependencies.Output('page-content', 'children'),
               [dash.dependencies.Input('url', 'pathname')])
 def display_page(pathname):
+    """Based on the user authenticated and the chosen data set it returns the relevant page"""
     username = request.authorization['username']
     if pathname == '/live' and username == os.environ["VALID_USERNAME"]:
         return returnPage(live=True)
@@ -211,6 +220,7 @@ def display_page(pathname):
 @app.callback(dash.dependencies.Output('deny', component_property='style'),
               [dash.dependencies.Input('url', 'pathname')])
 def hide(pathname):
+    """Shows or hides the unauthorised error message on the landing page"""
     username = request.authorization['username']
     if pathname == "/live" and username != os.environ["VALID_USERNAME"]:
         return {'display': 'block', "font-size": "xx-large"}
@@ -220,4 +230,3 @@ def hide(pathname):
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-    # todo get the sample data to update

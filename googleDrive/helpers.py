@@ -11,32 +11,37 @@ import string
 import random
 import json
 import sys
+
 load_dotenv()
 
 SCOPES = ['https://www.googleapis.com/auth/drive']
-serviceCredentialDict, keys = {}, ["type", "project_id", "private_key_id","private_key", "client_email", "client_id", "auth_uri", "token_uri", "auth_provider_x509_cert_url"]
+serviceCredentialDict, keys = {}, ["type", "project_id", "private_key_id", "private_key", "client_email", "client_id",
+                                   "auth_uri", "token_uri", "auth_provider_x509_cert_url"]
 
 for i in keys:
     serviceCredentialDict[i] = os.environ.get(i).replace("\\n", "\n")
 
 sys.stdout.flush()
-# Authenticate to Google Drive API
-creds= service_account.Credentials.from_service_account_info(serviceCredentialDict)
+creds = service_account.Credentials.from_service_account_info(serviceCredentialDict)  # Authenticate to Google Drive API
 service = build('drive', 'v3', credentials=creds)
 results = service.files().list(pageSize=10, fields="nextPageToken, files(id, name)").execute()
 
+
 def createConnection():
+    """Connects to Google Drive use service account credentials"""
     service = build('drive', 'v3', credentials=creds)
     return service
 
 
 def getFileNames(service):
+    """Returns a list of the files in Google Drive and their unique ids"""
     results = service.files().list(pageSize=10, fields="nextPageToken, files(id, name)").execute()
     items = results.get('files', [])
     return items
 
 
 def getFile(file_id):
+    """Downloads the chosen file from Google Drive API"""
     request = service.files().get_media(fileId=file_id)
     fh = io.BytesIO()
     downloader = MediaIoBaseDownload(fh, request)
@@ -48,23 +53,27 @@ def getFile(file_id):
 
 
 def chooseFileId(name):
+    """Uses the file name to extract the file id from the list of files"""
     for i in getFileNames(service):
         if i["name"] == name:
             return i["id"]
 
 
 def uploadFile(name, content):
+    """Uploads the file to Google Drive via its API using a service account"""
     media = http.MediaIoBaseUpload(io.StringIO(json.dumps(content, default=str)), mimetype='plain/text')
     file_metadata = {'name': name}
     service.files().create(body=file_metadata,
-                                        media_body=media,
-                                        fields='id').execute()
+                           media_body=media,
+                           fields='id').execute()
+
 
 def deleteFile(fileDelete):
+    """Deletes the file based on it'd id"""
     service.files().delete(fileId=fileDelete).execute()
     service.files().emptyTrash().execute()
 
-# todo this transactions not working in heroku but it is in helpers.py
+
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
     transactions_file_id = chooseFileId("transactions.json")
@@ -86,7 +95,9 @@ def appendTransactions(newData: list):
         print(e)
         print("error deleting and uploading transactions")
 
+
 def makeSampleData():
+    """Generates sample data using the latest transactions"""
     letters = string.ascii_uppercase
     sourceDataId = chooseFileId("transactions.json")
     sinkDataId = chooseFileId("transactions - Copy.json")
@@ -112,7 +123,5 @@ transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
 transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
 balances_sample = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
 
-
 if __name__ == "__main__":
     pass
-

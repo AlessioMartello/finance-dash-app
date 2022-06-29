@@ -30,7 +30,7 @@ def getHistoricBalances(df, df2):
     balance = []
 
     for i in transactions:
-        balance.append(value)
+        balance.append(int(round(value, 0)))
         value -= i
 
     df["balance"] = balance
