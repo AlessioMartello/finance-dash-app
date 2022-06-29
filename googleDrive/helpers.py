@@ -70,9 +70,6 @@ def deleteFile(fileDelete):
 # todo this transactions not working in heroku but it is in helpers.py
 def appendTransactions(newData: list):
     """Update the transaction file in google Drive"""
-    # file_id= chooseFileId("transactions.json")
-
-    # listExistingData=json.load(getFile(file_id))
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
@@ -84,13 +81,10 @@ def appendTransactions(newData: list):
     try:
         deleteFile(transactions_file_id)  # todo this may change every time you call it?? in heroku
         print("successfully deleted transactions")
-    except:
-        print("error deleting transactions")
-    try:
         uploadFile("transactions.json", listExistingData)
         print("successfully uploaded new transactions")
     except:
-        print("error uploading transactions")
+        print("error deleting and uploading transactions")
 
 service = createConnection()
 file_objs = getFileNames(service)
@@ -105,4 +99,4 @@ balances_sample = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
 
 
 if __name__ == "__main__":
-    print(service.files().get(fileId=chooseFileId("transactions.json"), fields='*').execute())
+    pass

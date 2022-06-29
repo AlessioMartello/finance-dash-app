@@ -1,5 +1,5 @@
 from googleDrive.helpers import transactions, transactions_sample, balances_sample, \
-    appendTransactions # uploadFile, transactions_file_id, listExistingData,deleteFile  # ,creditScoreJsonStr
+    appendTransactions # uploadFile, transactions_file_id, listExistingData,deleteFile
 from helpers.formatData import getHistoricBalances, removeErrorTransaction, processTransactions, processBalances#, appendTransactions
 from helpers.KPIs import averageSpend, getCategoryCounts, monthlyExpenditure, currentMonthTransactions, thisMonthSpend
 from helpers.getfinancialData import getTransactions
@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load in data
-#creditScoreFile = creditScoreJsonStr
 todayDate = date.today() + timedelta(days=1)
 transRaw = getTransactions(todayDate)
 listProcessedTransaction = processTransactions(transRaw)

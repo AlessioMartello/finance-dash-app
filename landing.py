@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 from dash import dcc
 from helpers.KPIs import getTenLargestBuys
 from helpers.dashboardHelpers import returnTransDatatable, makeHeader, addTitle, createHistoricalBalances, \
-    createBalanceFigure, createMonthlySpendingFigure, createTransactionsThisMonth, createPieChart #,creditScoreLineChart,
-from index import getDisplayData, getTransDf, todayDate, getTransThisMonth, getText, getBalances #,creditScoreFile,
+    createBalanceFigure, createMonthlySpendingFigure, createTransactionsThisMonth, createPieChart
+from index import getDisplayData, getTransDf, todayDate, getTransThisMonth, getText, getBalances
 from flask import request
 from dash import html, Input, Output
 
@@ -103,9 +103,6 @@ def returnPage(live=False):
                     style={"margin-top": "4rem"})]),
             ], style={"textAlign": "left"},
             ),
-            # dbc.Row([dcc.Markdown(children=textDict["creditScoreText"]),
-            #          dcc.Graph(id="line-chart-credit", figure=creditScoreLineChart(creditScoreFile))],
-            #         style={"textAlign": "left"}),
         ], style={"padding": "2rem", 'textAlign': 'center', "display": "none"},
                  )
         ,
