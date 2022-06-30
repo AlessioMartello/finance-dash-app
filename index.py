@@ -1,5 +1,4 @@
-from googleDrive.helpers import transactions, transactions_sample, balances_sample, \
-    appendTransactions, makeSampleData
+from googleDrive.helpers import appendTransactions, makeSampleData, getFile, chooseFileId
 from helpers.formatData import getHistoricBalances, removeErrorTransaction, processTransactions, processBalances
 from helpers.KPIs import averageSpend, getCategoryCounts, monthlyExpenditure, currentMonthTransactions, thisMonthSpend
 from helpers.getfinancialData import getTransactions
@@ -21,11 +20,11 @@ appendTransactions(listProcessedTransaction)
 def getDisplayData(live=False):
     """Function returns the relevant data for balance and transactions."""
     if live:
-        transactionsFile = transactions
+        transactionsFile = pd.read_json(getFile(chooseFileId("transactions.json")))
         balancesDf = processBalances()
     else:
-        transactionsFile = transactions_sample
-        balancesDf = balances_sample
+        transactionsFile = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
+        balancesDf = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
     return transactionsFile, balancesDf
 
 

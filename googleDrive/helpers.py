@@ -4,7 +4,6 @@ from googleapiclient import http
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
 from googleapiclient.http import MediaIoBaseDownload
-import pandas as pd
 import os
 from google.oauth2 import service_account
 import string
@@ -119,9 +118,6 @@ def makeSampleData():
 
 
 service = createConnection()
-transactions = pd.read_json(getFile(chooseFileId("transactions.json")))
-transactions_sample = pd.read_json(getFile(chooseFileId("transactions - Copy.json")))
-balances_sample = pd.read_csv(getFile(chooseFileId("balancesexpo.csv")))
 
 if __name__ == "__main__":
     pass

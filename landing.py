@@ -19,7 +19,7 @@ VALID_USERNAME_PASSWORD_PAIRS = {
     }
 
 load_dotenv()
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY], update_title='Loading this sweet app..'
                 )
 app.config.suppress_callback_exceptions = True
 
@@ -44,8 +44,8 @@ def returnLandingPage():
         dbc.Row(id="deny", children=dbc.Col("You are not authorised to access this, please select the sample data"),
                 class_name="text-center align-items-center")])
 
-
-app.layout = html.Div([
+app.layout = html.Div(
+    [
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content'),
 ])
@@ -78,9 +78,9 @@ def returnPage(live=False):
         [
             makeHeader(textDict["KPIText"])
             ,
-            dbc.Row([addTitle(textDict["allTransactionsText"]), html.Div(id="my-div", style={"maxHeight": "50vh",
+            dbc.Row([addTitle(textDict["allTransactionsText"]), dcc.Loading(html.Div(id="my-div", style={"maxHeight": "50vh",
                                                                                              "overflow": "scroll",
-                                                                                             "margin-bottom": "2rem"})]),
+                                                                                             "margin-bottom": "2rem"}),color="#7026b9", type="graph")]),
             dbc.Row([
                 dbc.Col(
                     dcc.DatePickerRange(
@@ -139,6 +139,7 @@ def returnPage(live=False):
     ]
         , fluid=True,
     )
+
 
 
 @app.callback(
