@@ -90,7 +90,7 @@ def returnPage(live=False):
                         start_date=minDate,
                         end_date=todayDate,
                         display_format="DD MMM Y"
-                    ), style={"width": "100%"}
+                    ), style={"width": "50vw"}
                 ),
                 dbc.Col(dbc.Input(id="choose-kw", type="text", placeholder="Search for text from the name column")),
                 dbc.Col(dbc.Input(id="choose-amount", type="number", placeholder="Enter a maximum amount"))],

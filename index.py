@@ -63,7 +63,7 @@ f'''#### Average Spend: £{round(abs(meanSpend))}
 *Expenditures under £100'''
     textDict["monthlySpendingText"] = \
 f'''### Monthly spending totals 
-##### excluding standing orders and direct debits'''
+##### Excluding standing orders and direct debits'''
     textDict["balancesText"] = \
 f"""### Account Balances 
 ##### Excluding ISA"""

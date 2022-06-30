@@ -65,6 +65,7 @@ def returnTransDatatable(df_unformatted):
     for col in df:
         if col == "date" or col == "datetime":
             df[col] = pd.DatetimeIndex(df[col]).strftime("%d-%m-%Y")
+    df.columns = [column.capitalize().replace("_"," ") for column in df.columns]
 
     return dbc.Table.from_dataframe(df, striped=True, bordered=True, hover=True,)
 
@@ -200,7 +201,7 @@ def makeHeader(text):
             ),
         dbc.Col(
             html.H1('Alessio\'s personal finance app', className="text-center"),style={"color":"rgb(112,38,185)"}),
-        dbc.Col(dcc.Markdown(children=text))
+        dbc.Col(dcc.Markdown(children=text), className="text-center")
     ], justify="center", align="center", )
 
 
