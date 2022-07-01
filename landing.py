@@ -42,12 +42,18 @@ def returnLandingPage():
         ]
             , class_name="text-center align-items-center", style={"height": "80vh"}),
         dbc.Row(id="deny", children=dbc.Col("You are not authorised to access this, please select the sample data"),
-                class_name="text-center align-items-center")])
+                class_name="text-center align-items-center"),
+
+    ])
 
 app.layout = html.Div(
     [
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content'),
+    html.Div(id="spinner-div", children=[
+            dbc.Spinner(spinner_style={"width": "4rem", "height": "4rem"}, id="myspinner", fullscreen=True,
+                        color="#7026b9")
+        ])
 ])
 
 

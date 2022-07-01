@@ -99,7 +99,6 @@ def makeSampleData():
     """Generates sample data using the latest transactions"""
     letters = string.ascii_uppercase
     sourceDataId = chooseFileId("transactions.json")
-    sinkDataId = chooseFileId("transactions - Copy.json")
     source_json = json.load(getFile(sourceDataId))
 
     for i in source_json:
@@ -108,16 +107,21 @@ def makeSampleData():
         i["transaction_id"] = "Transaction id " + random.choice(letters)
         i["amount"] = random.randint(-1000, 1000)
     try:
+        sinkDataId = chooseFileId("transactions - Copy.json")
         deleteFile(sinkDataId)
         print("Successfully deleted sample data")
+    except Exception as e:
+        print(e)
+        print("error deleting sample data")
+    try:
         uploadFile("transactions - Copy.json", source_json)
         print("successfully uploaded sample data")
     except Exception as e:
         print(e)
-        print("error deleting and uploading sample data")
+        print("error uploading sample data")
 
 
 service = createConnection()
 
 if __name__ == "__main__":
-    pass
+    print(getFileNames(service))
