@@ -15,8 +15,8 @@ from dash import html, Input, Output
 # Load in env variables for Dash Basic Auth
 VALID_USERNAME_PASSWORD_PAIRS = {
     str(os.environ["VALID_USERNAME"]): str(os.environ["VALID_PASSWORD"]),
-   str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]), #todo maybe remove the string method
-    }
+    str(os.environ["VALID_USERNAME2"]): str(os.environ["VALID_PASSWORD2"]),  # todo maybe remove the string method
+}
 
 load_dotenv()
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY], update_title='Loading this sweet app..'
@@ -27,7 +27,8 @@ auth = dash_auth.BasicAuth(
     app,
     VALID_USERNAME_PASSWORD_PAIRS
 )
-server=app.server # For use in Heroku Procfile
+server = app.server  # For use in Heroku Procfile
+
 
 def returnLandingPage():
     """
@@ -35,26 +36,26 @@ def returnLandingPage():
     """
     return html.Div([
         dbc.Row([
-            dbc.Col(
-                dbc.Button('Go to live data', href='/live', class_name="btn-lg")),
-            dbc.Col(
-                dbc.Button('Go to sample data', href='/sample', class_name="btn-lg"))
+            dbc.Col(className="col-md-6 col-12", children=
+            dbc.Button('Go to live data', href='/live', class_name="btn-lg")),
+            dbc.Col(className="col-md-6 col-12", children=
+            dbc.Button('Go to sample data', href='/sample', class_name="btn-lg"))
         ]
             , class_name="text-center align-items-center", style={"height": "80vh"}),
         dbc.Row(id="deny", children=dbc.Col("You are not authorised to access this, please select the sample data"),
                 class_name="text-center align-items-center"),
-
     ])
+
 
 app.layout = html.Div(
     [
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content'),
-    html.Div(id="spinner-div", children=[
+        dcc.Location(id='url', refresh=False),
+        html.Div(id='page-content'),
+        html.Div(id="spinner-div", children=[
             dbc.Spinner(spinner_style={"width": "4rem", "height": "4rem"}, id="myspinner", fullscreen=True,
                         color="#7026b9")
         ])
-])
+    ])
 
 
 def returnPage(live=False):
@@ -73,8 +74,8 @@ def returnPage(live=False):
 
     return dbc.Container([dbc.Tabs(
         [
-            dbc.Tab(label="Historic data", tab_id="tab1"),
-            dbc.Tab(label="This month", tab_id="tab2"),
+            dbc.Tab(label="Historic data", tab_id="tab1", className="purpleHover"),
+            dbc.Tab(label="This month", tab_id="tab2", className="purpleHover"),
         ],
         id="tabs",
         active_tab="tab-one",
@@ -84,37 +85,44 @@ def returnPage(live=False):
         [
             makeHeader(textDict["KPIText"])
             ,
-            dbc.Row([addTitle(textDict["allTransactionsText"]), dcc.Loading(html.Div(id="my-div", style={"maxHeight": "50vh",
-                                                                                             "overflow": "scroll",
-                                                                                             "margin-bottom": "2rem"}),color="#7026b9", type="graph")]),
+            dbc.Row(className="purpleHover", children=[addTitle(textDict["allTransactionsText"]),
+                                                       dcc.Loading(html.Div(id="my-div", style={"maxHeight": "50vh",
+                                                                                                "overflow": "scroll",
+                                                                                                "margin-bottom": "2rem"}),
+                                                                   color="#7026b9", type="graph")]),
             dbc.Row([
-                dbc.Col(
-                    dcc.DatePickerRange(
-                        id='my-date-picker-range',
-                        min_date_allowed=minDate,
-                        max_date_allowed=todayDate,
-                        start_date=minDate,
-                        end_date=todayDate,
-                        display_format="DD MMM Y"
-                    ), style={"width": "50vw"}
+                dbc.Col(className="col-md-4 col-12", children=
+                dcc.DatePickerRange(
+                    id='my-date-picker-range',
+                    min_date_allowed=minDate,
+                    max_date_allowed=todayDate,
+                    start_date=minDate,
+                    end_date=todayDate,
+                    display_format="DD MMM Y"
                 ),
-                dbc.Col(dbc.Input(id="choose-kw", type="text", placeholder="Search for text from the name column")),
-                dbc.Col(dbc.Input(id="choose-amount", type="number", placeholder="Enter a maximum amount"))],
-                style={"text-align": "left", "padding-bottom": "3rem"}),
+                        ),
+                dbc.Col(className="col-md-4 col-12", children=dbc.Input(id="choose-kw", type="text",
+                                                                        placeholder="Search for text from the name column")),
+                dbc.Col(className="col-md-4 col-12",
+                        children=dbc.Input(id="choose-amount", type="number", placeholder="Enter a maximum amount"))],
+                style={"padding-bottom": "3rem"}),
             dbc.Container(dbc.Row(html.Hr(
-                style={'borderWidth': "5vh", "width": "100%", "color": "#FFFFFF", "height": ".8px", "opacity": 1})),
-                          fluid=True, ),
-            dbc.Row([addTitle(textDict["balanceHistoryText"]), dcc.Graph(
-                id='Historic Balance Graph',
-                figure=createHistoricalBalances(transDf)
-            )], style={"text-align": "left"}),
+                style={"width": "100%", "color": "#FFFFFF", "height": ".8px", "opacity": 1})),
+                fluid=True, ),
+            dbc.Row(className="purpleHover d-none d-md-block",
+                    children=[addTitle(textDict["balanceHistoryText"]), dcc.Graph(
+                        id='Historic Balance Graph',
+                        figure=createHistoricalBalances(transDf)
+                    )], style={"text-align": "left"}),
             dbc.Row([
-                dbc.Col([addTitle(textDict["monthlySpendingText"]),
-                         createMonthlySpendingFigure(kpiDict["monthlySpending"])]),
-                dbc.Col([dbc.Row([addTitle(textDict["balancesText"]), createBalanceFigure(releventBalances)]), dbc.Row(
-                    [addTitle(textDict["pieChartText"]),
-                     dcc.Graph(id='Pie chart', figure=createPieChart(kpiDict["catgoryCounts"]))],
-                    style={"margin-top": "4rem"})]),
+                dbc.Col(className="purpleHover", children=[addTitle(textDict["monthlySpendingText"]),
+                                                           createMonthlySpendingFigure(kpiDict["monthlySpending"])]),
+                dbc.Col([dbc.Row(className="purpleHover",
+                                 children=[addTitle(textDict["balancesText"]), createBalanceFigure(releventBalances)]),
+                         dbc.Row(className="purpleHover d-none d-sm-block", children=
+                         [addTitle(textDict["pieChartText"]),
+                          dcc.Graph(id='Pie chart', figure=createPieChart(kpiDict["catgoryCounts"]))],
+                                 style={"margin-top": "4rem"})]),
             ], style={"textAlign": "left"},
             ),
         ], style={"padding": "2rem", 'textAlign': 'center', "display": "none"},
@@ -124,20 +132,22 @@ def returnPage(live=False):
             id="monthly", children=[
                 makeHeader(textDict["thisMonthSpent"]),
                 dbc.Row(
-                    html.Div(dbc.Row(
-                        [addTitle(textDict["thisMonthTransactionsTable"]), returnTransDatatable(transThisMonth)]
-                    )
-                        ,
-                        style={"maxHeight": "50vh", "overflow": "scroll", "margin-bottom": "2rem", "margin-top": "2rem"}
-                    )
+                    html.Div(dbc.Row(className="purpleHover", children=
+                    [addTitle(textDict["thisMonthTransactionsTable"]), returnTransDatatable(transThisMonth)]
+                                     )
+                             ,
+                             style={"maxHeight": "50vh", "overflow": "scroll", "margin-bottom": "2rem",
+                                    "margin-top": "2rem"}
+                             )
                 ),
                 dbc.Row([
-                    dbc.Col([
+                    dbc.Col(className="purpleHover d-none d-md-block", children=[
                         addTitle(textDict["thisMonthTransactionsGraph"]),
                         dcc.Graph(id="transactions-this-month", figure=createTransactionsThisMonth(transThisMonth))
                     ]),
-                    dbc.Col([addTitle(textDict["topTenText"]), returnTransDatatable(getTenLargestBuys(transThisMonth))
-                             ])
+                    dbc.Col(className="purpleHover", children=[addTitle(textDict["topTenText"]),
+                                                               returnTransDatatable(getTenLargestBuys(transThisMonth))
+                                                               ])
                 ]
                 )
             ]
@@ -145,7 +155,6 @@ def returnPage(live=False):
     ]
         , fluid=True,
     )
-
 
 
 @app.callback(

@@ -10,5 +10,4 @@ function hideSpinner (){
 
 function hide (){
     document.getElementById("spinner-div").classList.add('hidden');
-
 }

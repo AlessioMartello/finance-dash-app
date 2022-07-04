@@ -154,8 +154,6 @@ def createTransactionsThisMonth(df):
         secondary_y=False,
     )
 
-
-
     transactionsThisMonthFig.add_trace(
         go.Scatter(x=outThisMonth["datetime"], y=outThisMonth["amount"], name="Out",
                    customdata=outThisMonth["name"].tolist()),
@@ -194,14 +192,14 @@ def makeHeader(text):
     """Produces the Navbar-type Row element used in each tab"""
     imgFile = getFile(chooseFileId("am_logo_white.png")).read() # read logo in as bytes
     encoded_image = base64.b64encode(imgFile)
-    return dbc.Row([
-        dbc.Col(html.A(href="https://www.artlessi.co.uk", target="_blank", rel="noopener noreferrer", children=
+    return dbc.Row(className="text-center", children=[
+        dbc.Col(children=html.A(href="https://www.artlessi.co.uk", target="_blank", rel="noopener noreferrer", children=
             html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), style={"height": "20vh"})
-        )
+        ),
             ),
-        dbc.Col(
-            html.H1('Alessio\'s personal finance app', className="text-center"),style={"color":"rgb(112,38,185)"}),
-        dbc.Col(dcc.Markdown(children=text), className="text-center")
+        dbc.Col(className="purpleHover", children=
+            html.H1('Alessio\'s personal finance app'), md=4),
+        dbc.Col(dcc.Markdown(children=text), className="purpleHover", md=4)
     ], justify="center", align="center", )
 
 
