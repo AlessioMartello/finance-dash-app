@@ -10,11 +10,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Load in data
-makeSampleData()
 todayDate = date.today() + timedelta(days=1)
 transRaw = getTransactions(todayDate)
 listProcessedTransaction = processTransactions(transRaw)
 appendTransactions(listProcessedTransaction)
+makeSampleData()
 
 
 def getDisplayData(live=False):
