@@ -34,8 +34,10 @@ def monthlyExpenditure(rawTransactions):
         rawTransactions[col] = pd.to_datetime(rawTransactions[col])
     TransactionsAdHoc = notRecurring(rawTransactions)
     spendings = TransactionsAdHoc[TransactionsAdHoc["amount"] < 0]
-    spendingsGrouped = spendings[["date", "amount"]].groupby(pd.Grouper(key="date", freq='M')).sum().reset_index().round()
+    spendingsGrouped = spendings[["date", "amount"]].groupby(
+        pd.Grouper(key="date", freq='M')).sum().reset_index().round()
     spendingsGrouped["date"] = spendingsGrouped["date"].dt.strftime('%d-%m-%Y')
+    spendingsGrouped["4 Month Rolling Average"] = spendingsGrouped.rolling(4).mean()
     return spendingsGrouped
 
 
@@ -49,13 +51,17 @@ def currentMonthTransactions(transDf):
                                     ][relevantCols]
     return transactionsThisMonth
 
+
 def notRecurring(df):
     """Function to clean a df of recurring payments"""
     df = df[(df["amount"] != -1900) &
-                                    (df["amount"] != -500) &
-                                    (df["transaction_code"] != "direct debit") &
-                                    (df["transaction_code"] != "standing order")]
+            (df["amount"] != -500) &
+            (df["transaction_code"] != "direct debit") &
+            (df["transaction_code"] != "standing order") &
+            (df["amount"] > -10000)  # Assume expenditures arent greater than £10,000
+            ]
     return df
+
 
 def thisMonthSpend(df):
     """Returns the value of the expenditure this month"""
@@ -67,7 +73,7 @@ def thisMonthSpend(df):
 def getTenLargestBuys(df):
     """Returns a ranked df of the ten largest expenditures/ It groups the merchant if it is recurring"""
     df = notRecurring(df)
-    count =10
+    count = 10
     expenses = df[df["amount"] < 0]
     expensesGrouped = expenses.groupby(["name"])["amount"].sum().reset_index()
     tenLargestBuys = expensesGrouped.nsmallest(n=count, columns=['amount'])
