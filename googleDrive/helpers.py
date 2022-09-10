@@ -80,7 +80,8 @@ def appendTransactions(newData: list):
     existingTransactionIds = [i["transaction_id"].strip("\'") for i in listExistingData]
 
     for transaction in reversed(newData):
-        if transaction["name"] == "REGULAR TRANSFER FROM MR ALESSIO RICARDO MARTELLO REFERENCE - RENT":
+        if transaction["name"] == "REGULAR TRANSFER FROM MR ALESSIO RICARDO MARTELLO REFERENCE - RENT" \
+                or transaction["transaction_id"] == "Y87k5wPAgAF3a53Apr7xFpzaEEn0AqIzMMnpn": #errenous bank transfer to savings acc
             continue
         elif transaction["transaction_id"] not in existingTransactionIds:
             transaction["amount"] = -transaction["amount"]
