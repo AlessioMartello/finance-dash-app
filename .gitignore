@@ -7,3 +7,4 @@ Experian
 .env
 __pychache__/
 test.py
+plaid_troubleshooting_notes.txt
